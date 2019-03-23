@@ -1,0 +1,44 @@
+#!/bin/bash
+set -u
+## -*- encoding: utf-8 -*- vim:tabstop=8:shiftwidth=2
+
+typeset EM_IDX
+_em_print () {
+  (( EM_IDX++ ))
+  printf "%d:%s\\n" "$EM_IDX" "$1"
+}
+
+_em_templates () {
+  EM_IDX=-1
+  _em_print "この${1}を作ったのは誰だあっ!!"
+  _em_print "ゆっくり${1}していってね！！！"
+  _em_print "突然の${1} "
+  _em_print "急に${1}が来たので"
+  _em_print "${1}…そういうのもあるのか"
+  _em_print "${1}かわいいよ${1}"
+  _em_print "${1}が死んでも代わりはいるもの"
+  _em_print "${1}に気づくとは…やはり天才か"
+  _em_print "${1}は素人なのですが質問よろしいでしょうか"
+  _em_print "${1}とダンスっちまった"
+  _em_print "${1}をセンターに入れてスイッチ、${1}をセンターに入れてスイッチ..."
+  _em_print "見ろ！人が${1}のようだ！"
+  _em_print "我思う、ゆえに${1}あり"
+  _em_print "${1}は俺を怒らせた"
+  _em_print "むしゃむしゃしていた。${1}なら何でもよかった。"
+  ### @@@TEMPLATE@@@
+}
+
+main () {
+  local _idx_pattern=
+  local _msg="${1:-$USER}"
+  shift
+  _em_templates "$_msg" "${1+$@}" > /dev/null
+  (( EM_IDX++ ))
+  _idx_pattern="^$(( RANDOM % EM_IDX )):"
+  # RANDOM range is 0 - 32767. take care.
+  _em_templates "$_msg" "${1+$@}" \
+    | grep "${_idx_pattern}" \
+    | sed "s/${_idx_pattern}//"
+}
+
+main "${1+$@}"
