@@ -4,6 +4,7 @@ addons:
   apt:
     packages:
       - shellcheck
+      - libevent-dev
       - gcc
       - make
       - curl
@@ -36,9 +37,10 @@ matrix:
 before_script:
   - export TMPDIR=$TRAVIS_BUILD_DIR/tmp
   - mkdir -p $TMPDIR
-  - cd "$TMPDIR" && curl "http://ftp.gnu.org/gnu/bash/bash-${SH_VERSION}.tar.gz" | tar xvz && cd bash* && ./configure; make && sudo make install && sudo cp ./bash /usr/bin/bash
+  - ( cd "$TMPDIR" && curl "http://ftp.gnu.org/gnu/bash/bash-${SH_VERSION}.tar.gz" | tar xvz && cd bash* && ./configure; make && sudo make install && sudo mv /bin/bash /bin/bash.old && sudo cp ./bash /bin/bash )
 
 script:
+  - /bin/bash --version
   - shellcheck ./bin/echo-meme
-  - /usr/bin/bash -n ./bin/echo-meme
-  - /usr/bin/bash ./bin/echo-meme "`date`"
+  - /bin/bash -n ./bin/echo-meme
+  - /bin/bash ./bin/echo-meme "`date`"
