@@ -11,8 +11,8 @@ $ echo-meme 山田
 見ろ！人が山田のようだ！
 ```
 
-Register your favorite memes ! ([see Usage](#usage))
-あなたのお気に入りのミームを登録しましょう ! ([see Usage](#usage)).
+Tell us about your favorite memes ! ([see Usage](#usage))
+あなたのお気に入りのミームを教えて下さい ! ([see Usage](#usage)).
 
 ## Installation
 
