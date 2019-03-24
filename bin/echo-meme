@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -u
 
 readonly EM_VERSION="v0.0.0"
 readonly EM_THIS_CMD="${0##*/}"
@@ -151,7 +151,8 @@ EM_msg_error() {
 
 EM_main () {
   local _opt_register_global=0
-  local _msg=""
+  local _opt_register_msg=""
+  local _msg=()
   while (( $# > 0 )); do
     local _opt="$1"; shift
     case "$_opt" in
@@ -164,34 +165,31 @@ EM_main () {
         return 0
         ;;
       -s)
-        if [[ -n "$_msg" ]]; then
-          EM_command_help
-          EM_msg_error "Invalid argument '$_msg'"
-          return 1
-        fi
-        _msg="$(cat)"
+        IFS=$'\n' read -r -a _msg -d '' <<<"$(cat)"
         ;;
       -r)
         _opt_register_global=1
+        _opt_register_msg="${1-}"
         ;;
       *)
-        if [[ -n "$_msg" ]]; then
-          EM_command_help
-          EM_msg_error "Invalid argument '$_msg'"
-          return 1
-        fi
-        _msg="$_opt"
+        [[ -n "$_opt" ]] && _msg+=("$_opt")
         ;;
     esac
   done
   if [[ $_opt_register_global -eq 1 ]]; then
-    EM_check_message_before_register "${_msg}" || return 1
+    EM_check_message_before_register "${_opt_register_msg}" || {
+      EM_command_help
+      return 1
+    }
     EM_msg_info "Open this URL and just click [Submit this issue]! Do not hesiate."
-    EM_command_register_global "new_meme_request:${_msg:0:10}..." "template:[${_msg}]"
+    EM_command_register_global "new_meme_request:${_opt_register_msg:0:10}..." "template:[${_opt_register_msg}]"
     return 0
   fi
-  _msg="${_msg:-$USER}"
-  EM_command_echo "${_msg}"
+  # EM_msg_info "${#_msg[@]}"
+  if [[ "${#_msg[@]}" -eq 0 ]]; then
+    _msg=("$USER")
+  fi
+  EM_command_echo "${_msg[*]}"
 }
 
 EM_main "${1+"$@"}"
