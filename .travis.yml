@@ -43,4 +43,5 @@ script:
   - /bin/bash --version
   - shellcheck ./bin/echo-meme
   - /bin/bash -n ./bin/echo-meme
+  - /bin/bash ./test/test.sh
   - /bin/bash ./bin/echo-meme "`date`"
