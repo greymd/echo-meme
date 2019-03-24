@@ -6,7 +6,7 @@ readonly BINMODE=755
 readonly DOCMODE=644
 readonly PREFIX="${1:-/usr/local}"
 readonly PREFIX_BIN="${PREFIX}/bin"
-readonly PREFIX_MAN="${PREFIX}/man"
+readonly PREFIX_MAN="${PREFIX}/share/man/man1"
 
 # Install (bin)
 echo install -d "${PREFIX_BIN}"
