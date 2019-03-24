@@ -2,8 +2,30 @@
 set -u
 
 readonly EM_VERSION="v0.0.0"
-typeset EM_THIS_CMD="${0##*/}"
+readonly EM_THIS_CMD="${0##*/}"
+readonly EM_THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%N}}")" && pwd)"
 typeset EM_IDX
+
+readonly EM_TEMPLATES=(
+  "この{}を作ったのは誰だあっ!!"
+  "ゆっくり{}していってね！！！"
+  "突然の{} "
+  "急に{}が来たので"
+  "{}…そういうのもあるのか"
+  "{}かわいいよ{}"
+  "{}が死んでも代わりはいるもの"
+  "{}に気づくとは…やはり天才か"
+  "{}は素人なのですが質問よろしいでしょうか"
+  "{}とダンスっちまった"
+  "{}をセンターに入れてスイッチ、{}をセンターに入れてスイッチ..."
+  "見ろ！人が{}のようだ！"
+  "我思う、ゆえに{}あり"
+  "{}は俺を怒らせた"
+  "わぁい{}、{}大好き"
+  "むしゃむしゃしていた。{}なら何でもよかった。"
+  "身体は闘争を求める → {}が売れる → {}の新作が作られる"
+  "@@@TEMPLATE_INSERT_HERE@@@"
+)
 
 EM_puts () {
   (( EM_IDX++ ))
@@ -23,17 +45,39 @@ OPTIONS:
   --help       Display this help and exit
   --version    Output version information and exit
   -s           Read message from stdin
-  -l           Register new meme to local
-  -g           Register new meme to global
+  -l           Register new meme to local (see REGISTER MEME)
+  -g           Register new meme to global (see REGISTER MEME)
 
 REGISTER MEME:
   '{}' is the placeholder of the message.
   For example,
-    ${EM_THIS_CMD} -l 'こんにちは{}、ありがとう{}'
-   -g option shows the URL to send the pull-request to the ${EM_THIS_CMD} repository.
+    $ sudo ${EM_THIS_CMD} -l 'こんにちは{}、ありがとう{}'
+  -g option shows the URL to send the pull-request to the ${EM_THIS_CMD} repository.
+    $ ${EM_THIS_CMD} -g 'こんにちは{}、ありがとう{}'
+    https://github.com/greymd/echo-meme/issues/new?body=...
 
 _EOS_
 
+}
+
+EM_urlenc () {
+  local _payload="$1"
+  printf "%s" "$_payload" | od -v -An -tx1 | xargs | tr ' ' '%' | sed 's/^/%/' | tr '[:lower:]' '[:upper:]'
+}
+
+EM_command_register_global () {
+  local _title="$1" ;shift
+  local _body="$1" ;shift
+  echo "https://github.com/greymd/echo-meme/issues/new?body=$(EM_urlenc "$_body")&title=$(EM_urlenc "$_title")"
+}
+
+EM_command_register_local () {
+  local _body="$1" ;shift
+  local _placeholder_before='{}'
+  # shellcheck disable=SC2016
+  local _placeholder_after='${1}'
+  _body=${_body//$_placeholder_before/$_placeholder_after}
+  # sed -i .bak "s/@@@TEMPLATE_INSERT_HERE@@@/$_body/" "${EM_THIS_DIR}/${EM_THIS_CMD}"
 }
 
 EM_templates () {
@@ -56,7 +100,7 @@ EM_templates () {
   EM_puts "わぁい${1}、${1}大好き"
   EM_puts "むしゃむしゃしていた。${1}なら何でもよかった。"
   EM_puts "身体は闘争を求める → ${1}が売れる → ${1}の新作が作られる"
-  ### @@@TEMPLATE_INSERT_HERE@@@
+  EM_puts "@@@TEMPLATE_INSERT_HERE@@@"
   ### @@@TEMPLATE_END@@@
 }
 
@@ -65,7 +109,6 @@ EM_command_echo () {
   local _idx_pattern=
   shift
   EM_templates "$_msg" > /dev/null
-  (( EM_IDX++ ))
   # RANDOM range is 0 - 32767. take care.
   _idx_pattern="^$(( RANDOM % EM_IDX )):"
   EM_templates "$_msg" \
@@ -73,11 +116,29 @@ EM_command_echo () {
     | sed "s/${_idx_pattern}//"
 }
 
+EM_check_message_before_register() {
+  local _msg="$1"
+  if [[ -z "$_msg" ]]; then
+    EM_command_help
+    EM_msg_error "Empty message is not allowed"
+    return 1
+  fi
+  if ! [[ "$_msg" =~ {} ]]; then
+    EM_command_help
+    EM_msg_error "Message does not include placeholder '{}'"
+    return 1
+  fi
+}
+
 EM_msg() {
   local _loglevel="$1"
   local _msgbody="$2"
   local _msg="${EM_THIS_CMD}:${_loglevel}: ${_msgbody}"
   printf "%s\\n" "${_msg}" >&2
+}
+
+EM_msg_info() {
+  EM_msg "Info" "$1"
 }
 
 EM_msg_error() {
@@ -123,13 +184,19 @@ main () {
         ;;
     esac
   done
-  _msg="${_msg:-$USER}"
   if [[ $_opt_register_local -eq 1 ]]; then
-    :
+    EM_check_message_before_register "${_msg}" || return 1
+    EM_command_register_local "${_msg}"
+    EM_msg_info "Message is successfully registered"
+    return 0
   fi
   if [[ $_opt_register_global -eq 1 ]]; then
-    :
+    EM_check_message_before_register "${_msg}" || return 1
+    EM_msg_info "Open this URL to create the issue:"
+    EM_command_register_global "New meme request:${_msg}" "Template:${_msg}"
+    return 0
   fi
+  _msg="${_msg:-$USER}"
   EM_command_echo "${_msg}"
 }
 
