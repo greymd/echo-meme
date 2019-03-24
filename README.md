@@ -1,5 +1,9 @@
 # echo-meme
 
+[![Build Status](https://travis-ci.org/greymd/echo-meme.svg?branch=master)](https://travis-ci.org/greymd/echo-meme)
+![LICENSE](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+[![Latest version](https://img.shields.io/github/release/greymd/echo-meme.svg)](https://github.com/greymd/echo-meme/releases/latest)
+
 Print your message as a part of various Japanese internet memes.
 
 メッセージを様々な流行りのフレーズ、インターネットミームの一部に組み込んで出力するコマンドです。
