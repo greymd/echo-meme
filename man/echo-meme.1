@@ -1,0 +1,33 @@
+.TH XPANES 1 "MAR 2019" "User Commands" ""
+.SH NAME
+.PP
+echo\-meme \- Print your message as a part of various Japanese internet memes.
+.SH SYNOPSIS
+.PP
+echo\-meme [\fB\fCOPTIONS\fR] \fIMESSAGE\fP ...
+.SH OPTIONS
+.TP
+\fB\fC\-\-help\fR
+Display this help and exit
+.TP
+\fB\fC\-\-version\fR
+Output version information and exit
+.TP
+\fB\fC\-s\fR
+Read message from stdin
+.TP
+\fB\fC\-r\fR
+Send request to register new meme (see REGISTER MEME)
+.SH REGISTER MEME
+.PP
+\fB\fC{}\fR is the placeholder of the message.
+.TP
+For example,
+$ \fB\fCecho\-meme\fR \-r 'こんにちは{}、ありがとう{}'
+.PP
+It displays the URL to send the pull\-request to the echo\-meme repository.
+\[la]https://github.com/greymd/echo-meme/issues/new\[ra]\&...
+.SH AUTHOR AND COPYRIGHT
+.PP
+Copyright (c) 2019 Yamada, Yasuhiro \[la]greengregson@gmail.com\[ra] Released under the MIT License.
+\[la]https://github.com/greymd/echo-meme\[ra]
