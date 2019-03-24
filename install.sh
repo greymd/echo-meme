@@ -17,5 +17,5 @@ install -m "${BINMODE}" "${THIS_DIR}/bin/echo-meme" "${PREFIX_BIN}/echo-meme"
 # Install (man)
 echo install -d "${PREFIX_MAN}"
 install -d "${PREFIX_MAN}"
-echo install -m "${BINMODE}" "${THIS_DIR}/bin/echo-meme" "${PREFIX_MAN}/echo-meme.1"
-install -m "${BINMODE}" "${THIS_DIR}/bin/echo-meme" "${PREFIX_MAN}/echo-meme.1"
+echo install -m "${BINMODE}" "${THIS_DIR}/man/echo-meme.1" "${PREFIX_MAN}/echo-meme.1"
+install -m "${BINMODE}" "${THIS_DIR}/man/echo-meme.1" "${PREFIX_MAN}/echo-meme.1"
