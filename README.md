@@ -1,3 +1,11 @@
 # echo-meme
-## 参考
-http://www25231ue.sakura.ne.jp/pukiwiki/index.php?FrontPage
+
+Print various phrases based on the sinternet memes.
+
+```
+$ echo-meme クマさん
+クマさんかわいいよクマさん
+
+$ echo-meme クマさん
+諸君らが愛してくれたクマさんは死んだ。なぜだ!？
+```

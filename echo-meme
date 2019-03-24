@@ -4,11 +4,9 @@ set -u
 readonly EM_VERSION="v0.0.0"
 readonly EM_THIS_CMD="${0##*/}"
 readonly EM_THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%N}}")" && pwd)"
-typeset EM_IDX
-
+readonly EM_PLACEHOLDER='{}'
 readonly EM_TEMPLATES=(
   "この{}を作ったのは誰だあっ!!"
-  "ゆっくり{}していってね！！！"
   "突然の{} "
   "急に{}が来たので"
   "{}…そういうのもあるのか"
@@ -17,20 +15,28 @@ readonly EM_TEMPLATES=(
   "{}に気づくとは…やはり天才か"
   "{}は素人なのですが質問よろしいでしょうか"
   "{}とダンスっちまった"
-  "{}をセンターに入れてスイッチ、{}をセンターに入れてスイッチ..."
+  "{}をセンターに入れてスイッチ..."
   "見ろ！人が{}のようだ！"
   "我思う、ゆえに{}あり"
   "{}は俺を怒らせた"
   "わぁい{}、{}大好き"
+  "ゆっくり{}していってね！！！"
   "むしゃむしゃしていた。{}なら何でもよかった。"
   "身体は闘争を求める → {}が売れる → {}の新作が作られる"
+  "我が生涯に一片の{}なし！"
+  "はい今死んだ！今君の{}死んだよ！"
+  "{}は爆発だ"
+  "あきらめたらそこで{}だよ"
+  "{}は人を傷つける。いつだって"
+  "諸君らが愛してくれた{}は死んだ。なぜだ!？"
+  "三十六計{}に如かず"
+  "ざんねんながら{}はきえてしまいました"
+  "だが{}は四天王の中で最弱"
+  "吾輩は{}である。名前はまだ無い。"
+  "{}は小説よりも奇なり"
+  "高度に発達した{}は魔法と区別がつかない"
   "@@@TEMPLATE_INSERT_HERE@@@"
 )
-
-EM_puts () {
-  (( EM_IDX++ ))
-  printf "%d:%s\\n" "$EM_IDX" "$1"
-}
 
 EM_command_version () {
   echo "${EM_THIS_CMD} ${EM_VERSION}"
@@ -45,16 +51,14 @@ OPTIONS:
   --help       Display this help and exit
   --version    Output version information and exit
   -s           Read message from stdin
-  -l           Register new meme to local (see REGISTER MEME)
-  -g           Register new meme to global (see REGISTER MEME)
+  -r           Send request to register new meme (see REGISTER MEME)
 
 REGISTER MEME:
   '{}' is the placeholder of the message.
   For example,
-    $ sudo ${EM_THIS_CMD} -l 'こんにちは{}、ありがとう{}'
-  -g option shows the URL to send the pull-request to the ${EM_THIS_CMD} repository.
-    $ ${EM_THIS_CMD} -g 'こんにちは{}、ありがとう{}'
-    https://github.com/greymd/echo-meme/issues/new?body=...
+    $ sudo ${EM_THIS_CMD} -r 'こんにちは{}、ありがとう{}'
+  It displays the URL to send the pull-request to the ${EM_THIS_CMD} repository.
+    https://github.com/greymd/echo-meme/issues/new...
 
 _EOS_
 
@@ -71,49 +75,15 @@ EM_command_register_global () {
   echo "https://github.com/greymd/echo-meme/issues/new?body=$(EM_urlenc "$_body")&title=$(EM_urlenc "$_title")"
 }
 
-EM_command_register_local () {
-  local _body="$1" ;shift
-  local _placeholder_before='{}'
-  # shellcheck disable=SC2016
-  local _placeholder_after='${1}'
-  _body=${_body//$_placeholder_before/$_placeholder_after}
-  # sed -i .bak "s/@@@TEMPLATE_INSERT_HERE@@@/$_body/" "${EM_THIS_DIR}/${EM_THIS_CMD}"
-}
-
-EM_templates () {
-  EM_IDX=-1
-  ### @@@TEMPLATE_START@@@
-  EM_puts "この${1}を作ったのは誰だあっ!!"
-  EM_puts "ゆっくり${1}していってね！！！"
-  EM_puts "突然の${1} "
-  EM_puts "急に${1}が来たので"
-  EM_puts "${1}…そういうのもあるのか"
-  EM_puts "${1}かわいいよ${1}"
-  EM_puts "${1}が死んでも代わりはいるもの"
-  EM_puts "${1}に気づくとは…やはり天才か"
-  EM_puts "${1}は素人なのですが質問よろしいでしょうか"
-  EM_puts "${1}とダンスっちまった"
-  EM_puts "${1}をセンターに入れてスイッチ、${1}をセンターに入れてスイッチ..."
-  EM_puts "見ろ！人が${1}のようだ！"
-  EM_puts "我思う、ゆえに${1}あり"
-  EM_puts "${1}は俺を怒らせた"
-  EM_puts "わぁい${1}、${1}大好き"
-  EM_puts "むしゃむしゃしていた。${1}なら何でもよかった。"
-  EM_puts "身体は闘争を求める → ${1}が売れる → ${1}の新作が作られる"
-  EM_puts "@@@TEMPLATE_INSERT_HERE@@@"
-  ### @@@TEMPLATE_END@@@
-}
-
 EM_command_echo () {
   local _msg="$1"
-  local _idx_pattern=
   shift
-  EM_templates "$_msg" > /dev/null
+  local _num_templates="${#EM_TEMPLATES[@]}"
+  # - 1 to hide "@@@TEMPLATE_INSERT_HERE@@@"
+  local _print_target_index="$(( RANDOM % ( _num_templates - 1 ) ))"
   # RANDOM range is 0 - 32767. take care.
-  _idx_pattern="^$(( RANDOM % EM_IDX )):"
-  EM_templates "$_msg" \
-    | grep "${_idx_pattern}" \
-    | sed "s/${_idx_pattern}//"
+  local _print_message="${EM_TEMPLATES[${_print_target_index}]}"
+  printf "%s\\n" "${_print_message//$EM_PLACEHOLDER/${_msg}}"
 }
 
 EM_check_message_before_register() {
@@ -125,7 +95,7 @@ EM_check_message_before_register() {
   fi
   if ! [[ "$_msg" =~ {} ]]; then
     EM_command_help
-    EM_msg_error "Message does not include placeholder '{}'"
+    EM_msg_error "Message does not include placeholder '$EM_PLACEHOLDER'"
     return 1
   fi
 }
@@ -145,8 +115,7 @@ EM_msg_error() {
   EM_msg "Error" "$1"
 }
 
-main () {
-  local _opt_register_local=0
+EM_main () {
   local _opt_register_global=0
   local _msg=""
   while (( $# > 0 )); do
@@ -168,10 +137,7 @@ main () {
         fi
         _msg="$(cat)"
         ;;
-      -l)
-        _opt_register_local=1
-        ;;
-      -g)
+      -r)
         _opt_register_global=1
         ;;
       *)
@@ -184,15 +150,9 @@ main () {
         ;;
     esac
   done
-  if [[ $_opt_register_local -eq 1 ]]; then
-    EM_check_message_before_register "${_msg}" || return 1
-    EM_command_register_local "${_msg}"
-    EM_msg_info "Message is successfully registered"
-    return 0
-  fi
   if [[ $_opt_register_global -eq 1 ]]; then
     EM_check_message_before_register "${_msg}" || return 1
-    EM_msg_info "Open this URL to create the issue:"
+    EM_msg_info "Open this URL and just click [Submit this issue]! Do not hesiate."
     EM_command_register_global "New meme request:${_msg}" "Template:${_msg}"
     return 0
   fi
@@ -200,5 +160,5 @@ main () {
   EM_command_echo "${_msg}"
 }
 
-main "${1+"$@"}"
+EM_main "${1+"$@"}"
 exit $?
