@@ -1,0 +1,44 @@
+language: bash
+sudo: required
+addons:
+  apt:
+    packages:
+      - shellcheck
+      - gcc
+      - make
+      - curl
+
+branches:
+    only:
+        - master
+        - develop
+        - /^develop-.*/
+        - /^bugfix.*/
+        - /^feature.*/
+
+matrix:
+    include:
+        - os: linux
+          env: SH_VERSION=3.2
+        - os: linux
+          env: SH_VERSION=4.0
+        - os: linux
+          env: SH_VERSION=4.1
+        - os: linux
+          env: SH_VERSION=4.2
+        - os: linux
+          env: SH_VERSION=4.3
+        - os: linux
+          env: SH_VERSION=4.4
+        - os: linux
+          env: SH_VERSION=5.0
+
+before_script:
+  - export TMPDIR=$TRAVIS_BUILD_DIR/tmp
+  - mkdir -p $TMPDIR
+  - cd "$TMPDIR" && curl "http://ftp.gnu.org/gnu/bash/bash-${SH_VERSION}.tar.gz" | tar xvz && cd bash* && ./configure; make && sudo make install && sudo mv /bin/bash /bin/bash.old && sudo cp ./bash /bin/bash
+
+script:
+  - shellcheck ./bin/echo-meme
+  - bash -n ./bin/echo-meme
+  - /bin/bash ./bin/echo-meme "`date`"
