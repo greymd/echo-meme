@@ -33,7 +33,7 @@ REGISTER MEME
 `{}` is the placeholder of the message.
 
 For example,
-  $ `echo-meme` -r 'こんにちは{}、ありがとう{}'
+  $ `echo-meme` -r 'all your {} are belong to us'
 
 It displays the URL to send the pull-request to the echo-meme repository.
 
