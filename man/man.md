@@ -1,4 +1,4 @@
-XPANES 1 "MAR 2019" "User Commands" ""
+ECHO-MEME 1 "MAR 2019" "User Commands" ""
 =======================================
 <!-- md2man-roff man.md > echo-meme.1 -->
 
