@@ -1,7 +1,8 @@
 # echo-meme
 
 Print your message as a part of various Japanese internet memes.
-メッセージを様々な日本のインターネットミームの一部に組み込んで出力するコマンドです。
+
+メッセージを様々な流行りのフレーズ、インターネットミームの一部に組み込んで出力するコマンドです。
 
 ```
 $ echo-meme 山田
@@ -12,23 +13,31 @@ $ echo-meme 山田
 ```
 
 Tell us about your favorite memes ! ([see Usage](#usage))
+
 あなたのお気に入りのミームを教えて下さい ! ([see Usage](#usage)).
 
 ## Installation
 
-#### Linux
+<!--
+### Linux
 
-#### macOS
+#### RHEL compatible distros
+
+#### Debian base distros
+-->
+
+### macOS
 
 ```
 $ brew tap greymd/tools
 $ brew install echo-meme
 ```
 
-#### Manual installation
+### Manual installation
 
 ```
-$ curl -OL https://git.io/echo-meme
+$ wget https://git.io/echo-meme
+(or $ curl -OL https://git.io/echo-meme )
 $ sudo install -m 755 /usr/bin/echo-meme
 ```
 
@@ -48,7 +57,7 @@ OPTIONS:
 REGISTER MEME:
   '{}' is the placeholder of the message.
   For example,
-    $ sudo echo-meme -r 'こんにちは{}、ありがとう{}'
+    $ echo-meme -r 'こんにちは{}、ありがとう{}'
   It displays the URL to send the pull-request to the echo-meme repository.
     https://github.com/greymd/echo-meme/issues/new...
 ```
