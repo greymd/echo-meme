@@ -22,13 +22,20 @@ Tell us about your favorite memes ! ([Send request](https://github.com/greymd/ec
 
 ## Installation
 
-<!--
 ### Linux
 
 #### RHEL compatible distros
 
+```
+$ sudo yum install -y https://git.io/echo-meme.rpm
+```
+
 #### Debian base distros
--->
+
+```
+$ wget https://git.io/echo-meme.deb
+$ sudo dpkg -i ./echo-meme.deb
+```
 
 ### macOS
 
