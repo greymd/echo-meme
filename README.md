@@ -30,12 +30,16 @@ Tell us about your favorite memes ! ([Send request](https://github.com/greymd/ec
 $ sudo yum install -y https://git.io/echo-meme.rpm
 ```
 
+Execute same command agaiin to update.
+
 #### Debian base distros
 
 ```
 $ wget https://git.io/echo-meme.deb
 $ sudo dpkg -i ./echo-meme.deb
 ```
+
+Execute same command agaiin to update.
 
 ### macOS
 
