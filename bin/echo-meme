@@ -116,12 +116,11 @@ EM_command_echo () {
 
 EM_check_message_before_register() {
   local _msg="$1"
-  local _pat="{}"
   if [[ -z "$_msg" ]]; then
     EM_msg_error "Empty message is not allowed"
     return 1
   fi
-  if ! [[ "$_msg" =~ $_pat ]]; then
+  if ! [[ "$_msg" =~ "$EM_PLACEHOLDER" ]]; then
     EM_msg_error "Message does not include placeholder '$EM_PLACEHOLDER'"
     return 1
   fi
