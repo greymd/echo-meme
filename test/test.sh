@@ -39,10 +39,18 @@ test_invalid_registration() {
   actual=$?
   expected=1
   assertEquals "$expected" "$actual"
+
+}
+
+test_valid_registration() {
+  ${EXEC} -r 'あいうえお{}かきくけこ'
+  actual=$?
+  expected=0
+  assertEquals "$expected" "$actual"
 }
 
 test_version() {
-  pattern="^echo-meme v[0-9].[0-9].[0-9]$"
+  pattern="^echo-meme v[0-9]+.[0-9]+.[0-9]+$"
   [[ "$(${EXEC} --version)" =~ $pattern ]]
   actual=$?
   expected=0

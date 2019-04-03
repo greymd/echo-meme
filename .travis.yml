@@ -44,5 +44,3 @@ script:
   - shellcheck ./bin/echo-meme
   - /bin/bash -n ./bin/echo-meme
   - /bin/bash ./test/test.sh
-  - /bin/bash ./bin/echo-meme "`date`"
-  - /bin/bash ./bin/echo-meme -r 'あいうえお{}かきくけこ'
