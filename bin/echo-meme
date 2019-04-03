@@ -197,5 +197,5 @@ EM_main () {
   EM_command_echo "${_msg[*]}"
 }
 
-EM_main "${1+"$@"}"
+EM_main ${1+"$@"}
 exit $?
