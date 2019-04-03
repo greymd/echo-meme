@@ -2,7 +2,7 @@ name : echo-meme
 cmdname : echo-meme
 summary : Print your message as a part of various Japanese internet memes.
 description : Print your message as a part of various Japanese internet memes.
-version : 1.0.1554285732
+version : 1.1.0
 changelog : Add new templates
 url : https://github.com/greymd/echo-meme
 author : Yasuhiro, Yamada
