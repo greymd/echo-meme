@@ -1,9 +1,13 @@
 language: bash
 sudo: required
+
+services:
+  - docker
+
 addons:
   apt:
     packages:
-      - shellcheck
+      # - shellcheck #Disable due to old version
       - libevent-dev
       - gcc
       - make
@@ -38,9 +42,10 @@ before_script:
   - export TMPDIR=$TRAVIS_BUILD_DIR/tmp
   - mkdir -p $TMPDIR
   - ( cd "$TMPDIR" && curl "http://ftp.gnu.org/gnu/bash/bash-${SH_VERSION}.tar.gz" | tar xvz && cd bash* && ./configure; make && sudo make install && sudo mv /bin/bash /bin/bash.old && sudo cp ./bash /bin/bash )
+  - docker pull koalaman/shellcheck:stable # Official docker container (v0.6.0 or later)
 
 script:
   - /bin/bash --version
-  - shellcheck ./bin/echo-meme
+  - docker run -v "$PWD:/mnt" koalaman/shellcheck ./bin/echo-meme
   - /bin/bash -n ./bin/echo-meme
   - /bin/bash ./test/test.sh
