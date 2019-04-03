@@ -86,7 +86,7 @@ REGISTER MEME:
   '{}' is the placeholder of the message.
   For example,
     $ ${EM_THIS_CMD} -r 'こんにちは{}、ありがとう{}'
-  It displays the URL to send the pull-request to the ${EM_THIS_CMD} repository.
+  It displays the URL to send the issue to the ${EM_THIS_CMD} repository.
     https://github.com/greymd/echo-meme/issues/new...
 
 _EOS_
