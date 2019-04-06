@@ -11,7 +11,7 @@ set -xue
 export GITHUB_AUTH="${GITHUB_AUTH}"
 readonly COMMON_HEADER=("--retry" "5" "-H" "User-Agent: Travis/1.0" "-H" "Authorization: token $GITHUB_AUTH" "-H" "Accept: application/vnd.github.v3+json" "-L" "-f")
 readonly REPO="greymd/echo-meme"
-readonly GIT_REPODIR="${TMPDIR}/${REPO}"
+readonly GIT_REPODIR="${TMPDIR:-/tmp}/${REPO}"
 readonly GIT_BRANCH="master"
 trap 'rm -rf "${GIT_REPODIR}"' EXIT
 
