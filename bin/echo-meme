@@ -104,6 +104,7 @@ readonly EM_TEMPLATES=(
   "あえて言おう、{}であると！"
   "{}とは違うのだよ、{}とは！"
   "貴様だって、{}だろうに！"
+  "MAKE {} GREAT AGAIN!"
   "@@@TEMPLATE_INSERT_HERE@@@"
 )
 
