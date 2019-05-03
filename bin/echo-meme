@@ -105,6 +105,7 @@ readonly EM_TEMPLATES=(
   "{}とは違うのだよ、{}とは！"
   "貴様だって、{}だろうに！"
   "MAKE {} GREAT AGAIN!"
+  "ともあれ、{}は滅ぶべきであると考える次第である"
   "@@@TEMPLATE_INSERT_HERE@@@"
 )
 
