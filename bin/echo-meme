@@ -241,7 +241,7 @@ EM_main () {
       EM_command_help
       return 1
     }
-    EM_msg_info "Open this URL and just click [Submit this issue]! Do not hesiate."
+    EM_msg_info "Open this URL and just click [Submit this issue]! Do not hesitate."
     EM_command_register_global "new_meme_request:${_opt_register_msg:0:10}..." "template:[${_opt_register_msg}]"
     return 0
   fi
