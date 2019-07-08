@@ -3,7 +3,6 @@ set -u
 
 readonly EM_VERSION="v1.1.0"
 readonly EM_THIS_CMD="${0##*/}"
-readonly EM_THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%N}}")" && pwd)"
 readonly EM_PLACEHOLDER='{}'
 readonly EM_TEMPLATES=(
   "40秒で{}しな！"
