@@ -45,5 +45,5 @@ Report bug from https://github.com/greymd/echo-meme/issues/new .
 AUTHOR AND COPYRIGHT
 ------
 
-Copyright (c) 2019 Yamada, Yasuhiro <greengregson@gmail.com> Released under the MIT License.
+Copyright (c) 2019 Yamada, Yasuhiro <yamada@gr3.ie> Released under the MIT License.
 https://github.com/greymd/echo-meme
