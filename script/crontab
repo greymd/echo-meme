@@ -1,0 +1,1 @@
+0 12 * * * cd /path/to/repo/echo-meme/script/ && GITHUB_AUTH=*** bash ./import_issue_batch.sh > ./import_issue_batch.log  2>&1
