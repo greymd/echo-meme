@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+## Copyright (C) Yasuhiro Yamada (yamada@gr3.ie)
+## <https://github.com/greymd/echo-meme/blob/master/bin/echo-meme>
+## Lincense: MIT License
 set -u
 
 readonly EM_VERSION="v1.1.1"
